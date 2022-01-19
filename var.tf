@@ -32,7 +32,7 @@ variable "kubernetes_version" {
     description = "kubernetes version"
 }
 
-variable "disk-size" {
+variable "disk_size" {
     default     = 250
     type        = number
     description = "os disk size in gigabytes"
