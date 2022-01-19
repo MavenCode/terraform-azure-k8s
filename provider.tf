@@ -8,11 +8,15 @@ terraform {
 }
 
 provider "azurerm" {
-    storage_account_name = var.storage_account_name
-    subscription_id      = var.subscription_id
-    tenant_id            = var.tenant_id
+    features {}
 
     use_msi = true
 
-    features {}
+    backend "azurerm" {
+        storage_account_name = var.storage_account_name
+        container_name       = var.container_name
+        key                  = var.key
+        subscription_id      = var.subscription_id
+        tenant_id            = var.tenant_id
+    }
 }

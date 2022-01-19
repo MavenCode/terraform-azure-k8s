@@ -7,6 +7,12 @@ variable "serviceprinciple_key" {
 variable "storage_account_name" {
 }
 
+variable "container_name" {
+}
+
+variable "key" {
+}
+
 variable "subscription_id" {
 }
 
