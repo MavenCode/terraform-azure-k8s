@@ -43,6 +43,6 @@ variable "kubernetes_version" {
 
 variable "disk-size" {
     default     = 250
-    type        = integer
+    type        = number
     description = "os disk size in gigabytes"
 }
