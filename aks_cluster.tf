@@ -1,26 +1,32 @@
-resource "azurerm_resource_group" "resource-group" {
-  name     = "${var.resource_group_name}-aks"
-  location = var.location
-}
-
-resource "azurerm_kubernetes_cluster" "cluster" {
-  name                 = "${var.cluster_name}-cluster"
-  location             = azurerm_resource_group.resource-group.location
-  resource_group_name  = azurerm_resource_group.resource-group.name
-  dns_prefix           = "mavenk8scluster"
-  kubernetes_version   = var.kubernetes_version
+resource "azurerm_kubernetes_cluster" "k8s" {
+  name                = "${var.cluster_name}-cluster"
+  location            = var.resource_group_name
+  resource_group_name = var.resource_group_location
+  dns_prefix          = "k8scluster"
+  kubernetes_version  = var.kubernetes_version
 
   default_node_pool {
-    name            = "default"
-    node_count      = "2"
-    vm_size         = "Standard_E4s_v3"
-    type            = "VirtualMachineScaleSets"
-    os_disk_size_gb = var.disk_size
+    name                = var.node_pool_name
+    node_count          = var.node_pool_count
+    vm_size             = var.node_pool_vm_size
+    type                = "VirtualMachineScaleSets"
+    os_disk_size_gb     = var.node_pool_osdisk_size
+    enable_auto_scaling = true
+    max_count           = var.node_pool_max_count
+    min_count           = var.node_pool_min_count
+  }
+
+  lifecycle {
+    ignore_changes = [
+      # Ignore changes to tags, e.g. because a management agent
+      # updates these based on some ruleset managed elsewhere.
+      default_node_pool[1],
+    ]
   }
 
   service_principal {
-    client_id     = var.serviceprinciple_id
-    client_secret = var.serviceprinciple_key
+    client_id     = var.client_id
+    client_secret = var.client_secret
   }
 
   network_profile {
@@ -29,7 +35,7 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   }
 
   identity {
-    type  = "SystemAssigned"
+    type = "SystemAssigned"
   }
 
   tags = {
@@ -37,9 +43,3 @@ resource "azurerm_kubernetes_cluster" "cluster" {
   }
 }
 
-resource "azurerm_virtual_network" "azure-vnet" {
-  name                = "maven-vnet"
-  resource_group_name = azurerm_resource_group.resource-group.name
-  location            = azurerm_resource_group.resource-group.location
-  address_space       = ["10.30.0.0/16"]
-}
