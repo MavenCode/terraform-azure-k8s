@@ -1,5 +1,4 @@
-resource "local_file" "kubeconfig" {
-    depends_on = [azurerm_kubernetes_cluster.cluster]
-    filename = "kube_config"
-    content = azurerm_kubernetes_cluster.cluster.kube_config_raw
+output "service_principal_id" {
+    description = "Service Principal ID"
+    value       = azurerm_kubernetes_cluster.k8s.service_principal[0].client_id
 }
