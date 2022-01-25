@@ -54,4 +54,173 @@ az ad sp create-for-rbac --name <service_principal_name> --role Contributor
 
 The output of the command is a JSON object.  
 
-Add the object a secret in your github repository.
+Add the object a secret in your github repository.  
+
+## Specify service principal credentials in environment variables  
+
+```
+export ARM_SUBSCRIPTION_ID="<azure_subscription_id>"
+export ARM_TENANT_ID="<azure_subscription_tenant_id>"
+export ARM_CLIENT_ID="<service_principal_appid>"
+export ARM_CLIENT_SECRET="<service_principal_password>"  
+```  
+
+## Create Terraform configuration files  
+Create a file named `provider.tf` and insert the following code:  
+
+```  
+terraform {
+  required_providers {
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = "~>2.65"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+
+  subscription_id   = var.subscription_id
+  tenant_id         = var.tenant_id
+  client_id         = var.client_id
+  client_secret     = var.client_secret
+}  
+```  
+
+Create a file named `main.tf` and insert the following code:  
+
+```  
+resource "azurerm_resource_group" "rg" {
+  name     = var.resource_group_name
+  location = var.location
+}
+
+resource "azurerm_kubernetes_cluster" "k8s" {
+  name                 = "${var.cluster_name}-cluster"
+  location             = azurerm_resource_group.rg.location
+  resource_group_name  = azurerm_resource_group.rg.name
+  dns_prefix           = var.dns_prefix
+  kubernetes_version   = var.kubernetes_version
+
+  default_node_pool {
+    name            = "main"
+    min_count       = var.node_min_count
+    max_count       = var.node_max_count
+    vm_size         = var.vm_size
+    os_disk_size_gb = var.disk_size
+    type            = "VirtualMachineScaleSets"
+  }
+
+  service_principal {
+    client_id     = var.serviceprinciple_id
+    client_secret = var.serviceprinciple_key
+  }
+
+  role_based_access_control {
+    enabled = var.rbac_enabled
+  }
+  
+}  
+```  
+
+Create a file named `variables.tf` to declare all the variables defined in the above files, and insert the following codes:  
+
+```  
+variable "resource_group_name" { 
+}
+
+variable "location" {
+    default = "eastus2"
+    description = "Location of resource group"
+}
+
+variable "cluster_name" {
+}
+
+variable "dns_prefix" {
+  description = "Prefix of the resource group."
+}
+
+variable "kubernetes_version" { 
+    default = "1.22.5"
+    description = "Kubernetes version"
+}
+
+variable "node_min_count" {
+  description = "Minimum number of nodes"
+}
+
+variable "node_max_count" {
+  description = "Maximum number of nodes"
+}
+
+variable "vm_size" {
+  description = "Size of the Virtual Machine"
+  default     = "Standard_DS2_v2"
+}
+
+variable "disk_size" {
+    default     = 250
+    description = "Operating system disk size in gigabytes"
+}
+
+variable "serviceprinciple_id" {
+}
+
+variable "serviceprinciple_key" {
+}
+
+variable "rbac_enabled" {
+  description = "Is Role Based Access Control Enabled?"
+  default     = false
+}
+
+variable "subscription_id" {
+}
+
+variable "client_id" {
+}
+
+variable "client_secret" {
+}
+
+variable "tenant_id" {
+}
+```  
+
+## Initialize Terraform  
+This downloads the Azure modules required to create an Azure resource group.  
+
+Terraform is initialized by running the following code:
+
+```  
+terraform init  
+```  
+
+## Validate Terraform configurations  
+This validates the configurations defined in the terraform files for the infrastructure's desired state.  
+
+Terraform configurations are validated by running the following code:  
+
+```  
+terraform validate  
+```  
+
+## Create a Terraform execution plan  
+This determines what actions are necessary to create the configuration defined in your terraform files.  
+
+Terraform plan is created by running the following code:  
+
+```  
+terraform plan  
+```  
+
+## Apply a Terraform execution plan  
+This creates the infrastruture defined in your configuration files.  
+
+You achieve this by running the following code:  
+
+```  
+terraform apply  
+```  
