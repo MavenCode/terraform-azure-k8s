@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "rg" {
-  name     = "${var.resource_group_name}-aks"
+  name     = var.resource_group_name
   location = var.location
 }
 
@@ -26,15 +26,6 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 
   role_based_access_control {
     enabled = var.rbac_enabled
-  }
-
-  network_profile {
-    network_plugin    = "kubenet"
-    load_balancer_sku = "Standard"
-  }
-
-  identity {
-    type  = "SystemAssigned"
   }
   
 }
