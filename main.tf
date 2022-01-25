@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_kubernetes_cluster" "k8s" {
-  name                 = "${var.cluster_name}-cluster"
+  name                 = var.cluster_name
   location             = azurerm_resource_group.rg.location
   resource_group_name  = azurerm_resource_group.rg.name
   dns_prefix           = var.dns_prefix
