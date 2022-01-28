@@ -1,4 +1,5 @@
 variable "resource_group_name" {}
+variable "location" {}
 variable "resource_group_location" {}
 variable "cluster_name" {}
 variable "kubernetes_version" {}
