@@ -53,7 +53,7 @@ Note: You can insert your values in the module block as shown above. or use a va
 Variables can be defined in the vars.tfvars file. A template can be seen on the repository.
 General variables can be seen below.
 
-5. Providers should be setup in the `provider.tf` file.
+5. Provider should be setup in the `provider.tf` file.
 ```
   required_providers {
     azurerm = {
