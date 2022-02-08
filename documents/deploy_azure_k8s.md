@@ -213,7 +213,7 @@ Follow the instructions in the [Terraform installation documentation](https://le
 
 Move the unzipped terraform installation file to your system's PATH after downloading the file.  
 
-5. ## Initilize Terraform  
+5. ## Initialize Terraform  
 Run the following command to initialize terraform in the root directory of the cloned repository.  
 
 ```  
