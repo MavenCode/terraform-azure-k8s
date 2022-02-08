@@ -1,33 +1,81 @@
-name: "Terraform-aks GitHub Actions"
-
+name: Terraform CICD workflow
 on:
   push:
     branches:
-      - "config-files"
-
+      - main
+  pull_request:
+    branches:
+      - 'main**'
+  workflow_dispatch: {}
+env:
+  GITHUB_TOKEN: ${{ secrets.GH_USER_TOKEN }}
 jobs:
-  terraform:
-    name: "Terraform Init"
-    runs-on: ubuntu-latest
-
+  Fetch-Branch-Name:
+    runs-on: ubuntu-20.04
+    outputs:
+      branch: ${{ steps.fetch_current_branch.outputs.branch }}
     steps:
-      - name: "Checkout"
+      - name: Fetch current branch
+        shell: bash
+        run: |
+          if [[ -z "$GITHUB_BASE_REF" ]]; then
+             export BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | cut -f1 -d"-")
+          else 
+             export BRANCH_NAME=${GITHUB_BASE_REF}
+          fi
+          echo "Deploying for Branch - ${BRANCH_NAME}"
+          echo "::set-output name=branch::${BRANCH_NAME}"
+        id: fetch_current_branch
+
+  deploy-terraform:
+    needs: Fetch-Branch-Name
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        region: [westeurope]
+    environment: ${{needs.Fetch-Branch-Name.outputs.branch}}
+    env:
+      RUNNER_ALLOW_RUNASROOT: 1
+      CURRENT_BRANCH: ${{needs.Fetch-Branch-Name.outputs.branch}}
+
+      TF_VAR_client_id: ${{secrets.ARM_CLIENT_ID}}
+      TF_VAR_client_secret: ${{secrets.ARM_CLIENT_SECRET}}
+      TF_VAR_tenant_id: ${{secrets.ARM_TENANT_ID}}
+      TF_VAR_subscription_id: ${{secrets.ARM_SUBSCRIPTION_ID}}
+    runs-on: ubuntu-20.04
+    steps:
+      - name: 'Checkout GitHub Action'
         uses: actions/checkout@v2
         with:
-          ref: "config-files"
+          token: ${{ env.GITHUB_TOKEN }}
+      - run: echo Branch - $CURRENT_BRANCH, repo - ${{ github.repository }}
 
-      - name: "Setup Terraform"
-        uses: hashicorp/setup-terraform@v1
+      - name: HashiCorp - Setup Terraform
+        uses: hashicorp/setup-terraform@v1.2.1
+        with:
+          terraform_version: 1.0.9
+          terraform_wrapper: false
 
       - name: Terraform fmt
         id: fmt
         run: terraform fmt -check
+        working-directory: '.'
         continue-on-error: true
 
-      - name: "Terraform Initialization"
+      - name: Terraform init
         id: init
-        run:  terraform init
+        run: terraform init
 
       - name: Terraform Validate
         id: validate
-        run: terraform validate
+        run: terraform validate -no-color
+
+      - id: plan
+        run: terraform plan --var-file=vars.tfvars -no-color -out=plan.tfdata
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve plan.tfdata
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve --var-file=vars.tfvars 

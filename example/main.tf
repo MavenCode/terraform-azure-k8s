@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "k8s_setup" {
-  source = "../"
+  source = "https://github.com/MavenCode/terraform-azure-k8s.git"
 
   cluster_name            = var.cluster_name
   resource_group_name     = azurerm_resource_group.rg.name
