@@ -1,7 +1,7 @@
 variable "resource_group_name" {}
 variable "resource_group_location" {}
 variable "cluster_name" {}
-variable "kubernetes_version" {}
+# variable "orchestrator_version" {}
 
 # node pool
 variable "node_pool_name" {}
