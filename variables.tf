@@ -12,6 +12,7 @@ variable "node_pool_min_count" {}
 
 variable "network_plugin" {}
 variable "load_balancer_sku" {}
+variable "dns_prefix" {}
 
 variable "client_id" {}
 variable "client_secret" {}

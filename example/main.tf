@@ -9,6 +9,7 @@ module "k8s_setup" {
   cluster_name            = var.cluster_name
   resource_group_name     = azurerm_resource_group.rg.name
   resource_group_location = azurerm_resource_group.rg.location
+  dns_prefix              = var.dns_prefix
   node_pool_name          = var.node_pool_name
   node_pool_count         = var.node_pool_count
   node_pool_vm_size       = var.node_pool_vm_size

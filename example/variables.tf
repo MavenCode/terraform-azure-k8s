@@ -11,6 +11,7 @@ variable "node_pool_max_count" {}
 variable "node_pool_min_count" {}
 variable "network_plugin" {}
 variable "load_balancer_sku" {}
+variable "dns_prefix" {}
 
 
 variable "env" {}
