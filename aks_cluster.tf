@@ -40,8 +40,8 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   }
 
   network_profile {
-    network_plugin    = "kubenet"
-    load_balancer_sku = "Standard"
+    network_plugin    = var.network_plugin    #"kubenet"
+    load_balancer_sku = var.load_balancer_sku #"Standard"
   }
 
   tags = {
