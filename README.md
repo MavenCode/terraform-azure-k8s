@@ -94,7 +94,7 @@ Once you have all you configuration files setup, you can spin up your infrastruc
 | Input variables | Description |
 | ------------- | ------------- |
 | cluster_name | Name of the azure kubernetes service cluster |
-| kubernetes_version | Kubernetes version
+| kubernetes_version | Kubernetes version |
 | node_pool_name | The name which should be used for the default Kubernetes Node Pool. |
 | node_pool_count | The initial number of nodes which should exist in this Node Pool |
 | node_pool_vm_size | The size of the Virtual Machine, such as Standard_DS2_v2 |
