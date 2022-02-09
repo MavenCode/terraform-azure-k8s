@@ -7,8 +7,6 @@ on:
     branches:
       - 'main**'
   workflow_dispatch: {}
-env:
-  GITHUB_TOKEN: ${{ secrets.GH_USER_TOKEN }}
 jobs:
   Fetch-Branch-Name:
     runs-on: ubuntu-20.04
@@ -48,7 +46,7 @@ jobs:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v2
         with:
-          token: ${{ env.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - run: echo Branch - $CURRENT_BRANCH, repo - ${{ github.repository }}
 
       - name: HashiCorp - Setup Terraform
@@ -66,16 +64,21 @@ jobs:
       - name: Terraform init
         id: init
         run: terraform init
+        working-directory: '.'
 
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
+        working-directory: '.'
 
       - id: plan
         run: terraform plan --var-file=vars.tfvars -no-color -out=plan.tfdata
+        working-directory: '.'
 
       - name: Terraform Apply
         run: terraform apply -auto-approve plan.tfdata
+        working-directory: '.'
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve --var-file=vars.tfvars 
+        working-directory: '.'
