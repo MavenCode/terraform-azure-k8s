@@ -1,18 +1,18 @@
-data "azurerm_kubernetes_service_versions" "current" {
-  location = var.resource_group_location
-}
+#data "azurerm_kubernetes_service_versions" "current" {
+#  location = var.resource_group_location
+#}
 
 resource "azurerm_kubernetes_cluster" "k8s" {
   name                = "${var.cluster_name}-cluster"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
   dns_prefix          = var.dns_prefix
-  kubernetes_version  = data.azurerm_kubernetes_service_versions.current.latest_version
+  kubernetes_version  = var.k8s_version
 
   default_node_pool {
     availability_zones   = [1]
     name                 = var.node_pool_name
-    orchestrator_version = data.azurerm_kubernetes_service_versions.current.latest_version
+    orchestrator_version = var.k8s_version
     node_count           = var.node_pool_count
     vm_size              = var.node_pool_vm_size
     type                 = "VirtualMachineScaleSets"
