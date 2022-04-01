@@ -5,8 +5,9 @@ resource "azurerm_resource_group" "rg" {
 
 module "k8s_setup" {
   source = "../"
-
+  create_aks              = var.create_aks
   cluster_name            = var.cluster_name
+  k8s_version             = var.k8s_version
   resource_group_name     = azurerm_resource_group.rg.name
   resource_group_location = azurerm_resource_group.rg.location
   dns_prefix              = var.dns_prefix
