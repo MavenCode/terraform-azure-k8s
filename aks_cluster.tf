@@ -3,6 +3,7 @@
 #}
 
 resource "azurerm_kubernetes_cluster" "k8s" {
+  count               = var.create_aks == true ? 1:0
   name                = "${var.cluster_name}-cluster"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
