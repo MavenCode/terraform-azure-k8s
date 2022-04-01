@@ -1,6 +1,6 @@
 module "k8s_setup" {
   source = "../"
-  create_aks              = var.create_aks
+  disable_auto_scaling    = var.disable_auto_scaling
   cluster_name            = var.cluster_name
   k8s_version             = var.k8s_version
   resource_group_name     = var.resource_group_name
