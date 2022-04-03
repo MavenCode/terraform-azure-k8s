@@ -1,14 +1,10 @@
-resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group_name
-  location = var.resource_group_location
-}
-
 module "k8s_setup" {
   source = "../"
-
+  disable_auto_scaling    = var.disable_auto_scaling
   cluster_name            = var.cluster_name
-  resource_group_name     = azurerm_resource_group.rg.name
-  resource_group_location = azurerm_resource_group.rg.location
+  k8s_version             = var.k8s_version
+  resource_group_name     = var.resource_group_name
+  resource_group_location = var.resource_group_location
   dns_prefix              = var.dns_prefix
   node_pool_name          = var.node_pool_name
   node_pool_count         = var.node_pool_count
