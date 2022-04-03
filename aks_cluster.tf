@@ -3,7 +3,6 @@
 #}
 
 resource "azurerm_kubernetes_cluster" "k8s" {
-  count               = var.disable_auto_scaling == true ? 1:1
   name                = "${var.cluster_name}-cluster"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
