@@ -1,7 +1,7 @@
 variable "resource_group_name" {}
 variable "resource_group_location" {}
 variable "cluster_name" {}
-variable "disable_auto_scaling" {}
+variable "enable_auto_scaling" {}
 variable "k8s_version" {}
 
 # node pool

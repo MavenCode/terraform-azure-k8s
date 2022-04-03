@@ -17,9 +17,9 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     vm_size              = var.node_pool_vm_size
     type                 = "VirtualMachineScaleSets"
     os_disk_size_gb      = var.node_pool_osdisk_size
-    enable_auto_scaling  = var.disable_auto_scaling ? false : true
-    max_count            = var.disable_auto_scaling ? null : var.node_pool_max_count
-    min_count            = var.disable_auto_scaling ? null : var.node_pool_min_count
+    enable_auto_scaling  = var.enable_auto_scaling ? true : false
+    max_count            = var.enable_auto_scaling ? null : var.node_pool_max_count
+    min_count            = var.enable_auto_scaling ? null : var.node_pool_min_count
   }
 
   lifecycle {
