@@ -19,5 +19,8 @@ variable "dns_prefix" {}
 variable "client_id" {}
 variable "client_secret" {}
 
-
 variable "env" {}
+
+variable "gpu_node_pool"{}
+variable "gpu_node_taints" {}
+variable "gpu_node_vm_size" {}
