@@ -10,7 +10,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   kubernetes_version  = var.k8s_version
 
   default_node_pool {
-    availability_zones   = [1]
+    # availability_zones   = [1]
     name                 = var.node_pool_name
     orchestrator_version = var.k8s_version
     node_count           = var.node_pool_count
