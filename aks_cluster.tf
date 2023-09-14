@@ -50,15 +50,15 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 }
 
 
-#resource "azurerm_kubernetes_cluster_node_pool" "aks" {
-#  name                  = var.gpu_node_pool
-#  kubernetes_cluster_id = azurerm_kubernetes_cluster.k8s.id
-#  vm_size               = var.gpu_node_vm_size
-#  node_count            = var.node_pool_count
-#  os_disk_size_gb       = var.node_pool_osdisk_size
-#  enable_auto_scaling   = var.enable_auto_scaling ? true : false
-#  max_count             = var.enable_auto_scaling ? var.node_pool_max_count : null
-#  min_count             = var.enable_auto_scaling ? var.node_pool_min_count : null
-#  node_taints           = var.gpu_node_taints
-#  #availability_zones    = [1]
-#}
+resource "azurerm_kubernetes_cluster_node_pool" "aks" {
+  name                  = var.gpu_node_pool
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.k8s.id
+  vm_size               = var.gpu_node_vm_size
+  #node_count            = var.node_pool_count
+  os_disk_size_gb       = var.node_pool_osdisk_size
+  enable_auto_scaling   = var.enable_auto_scaling ? true : false
+  max_count             = var.enable_auto_scaling ? var.node_pool_max_count : null
+  min_count             = var.enable_auto_scaling ? var.node_pool_min_count : null
+  node_taints           = var.gpu_node_taints
+  #availability_zones    = [1]
+}
