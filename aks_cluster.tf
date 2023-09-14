@@ -60,5 +60,5 @@ resource "azurerm_kubernetes_cluster_node_pool" "aks" {
   max_count             = var.enable_auto_scaling ? var.node_pool_max_count : null
   min_count             = var.enable_auto_scaling ? var.node_pool_min_count : null
   node_taints           = var.gpu_node_taints
-  availability_zones    = [1]
+  #availability_zones    = [1]
 }
