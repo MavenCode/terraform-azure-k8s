@@ -9,19 +9,15 @@ resource "azurerm_virtual_network" "aks_vnet" {
   name                = var.aks_vnet_name
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
-  address_space       = var.address_space
+  address_space       = var.vnet_address_range
 }
 
-resource "azurerm_subnet" "aks_subnet" {
-  name                 = var.aks_subnet_name
-  virtual_network_name = var.aks_vnet_name
-  resource_group_name  = var.resource_group_name
-  address_prefixes     = var.address_prefixes
-
-  depends_on = [
-    azurerm_virtual_network.aks_vnet
-  ]
-}
+data "azurerm_subnet" "aks_subnet" {
+   count                = var.aks_subnet_name != "" && var.subnet_address_range == "" ? 1 : 0
+   name                 = var.aks_subnet_name
+   virtual_network_name = var.aks_vnet_name
+   resource_group_name  = var.resource_group_name
+ }
 
 resource "azurerm_kubernetes_cluster" "k8s" {
   name                = "${var.cluster_name}"
@@ -39,7 +35,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     enable_auto_scaling  = var.enable_auto_scaling ? true : false
     max_count            = var.enable_auto_scaling ? var.node_pool_max_count : null
     min_count            = var.enable_auto_scaling ? var.node_pool_min_count : null
-    vnet_subnet_id       = azurerm_subnet.aks_subnet.id
+    vnet_subnet_id       = data.azurerm_subnet.aks_subnet.id
   }
 
   lifecycle {
