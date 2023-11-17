@@ -24,12 +24,12 @@ variable "env" {}
 variable "aks_vnet_name" {}
 variable "aks_subnet_name" {}
 
-variable "address_space" {
-  description = "The address space for the virtual network"
+variable "vnet_address_range" {
+  description = "The IP address range for the virtual network"
   type        = list(string)
 }
 
-variable "address_prefixes" {
-  description = "The address prefixes for the subnet"
+variable "subnet_address_range" {
+  description = "The IP address range for the subnet"
   type        = list(string)
 }
