@@ -11,7 +11,6 @@ variable "node_pool_vm_size" {}
 variable "node_pool_osdisk_size" {}
 variable "node_pool_max_count" {}
 variable "node_pool_min_count" {}
-
 variable "network_plugin" {}
 variable "load_balancer_sku" {}
 variable "dns_prefix" {}
@@ -21,6 +20,16 @@ variable "client_secret" {}
 
 variable "env" {}
 
-variable "gpu_node_pool"{}
-variable "gpu_node_taints" {}
-variable "gpu_node_vm_size" {}
+# virtual network
+variable "aks_vnet_name" {}
+variable "aks_subnet_name" {}
+
+variable "vnet_address_range" {
+  description = "The IP address range for the virtual network"
+  type        = list(string)
+}
+
+variable "subnet_address_range" {
+  description = "The IP address range for the subnet"
+  type        = list(string)
+}
