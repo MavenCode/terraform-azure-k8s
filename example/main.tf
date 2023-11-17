@@ -1,13 +1,12 @@
 module "k8s_setup" {
   source = "../"
-  enable_auto_scaling    = var.enable_auto_scaling
+  enable_auto_scaling     = var.enable_auto_scaling
   cluster_name            = var.cluster_name
   k8s_version             = var.k8s_version
   resource_group_name     = var.resource_group_name
   resource_group_location = var.resource_group_location
   dns_prefix              = var.dns_prefix
   node_pool_name          = var.node_pool_name
-  node_pool_count         = var.node_pool_count
   node_pool_vm_size       = var.node_pool_vm_size
   node_pool_osdisk_size   = var.node_pool_osdisk_size
   node_pool_max_count     = var.node_pool_max_count
@@ -17,5 +16,9 @@ module "k8s_setup" {
   env                     = var.env
   client_id               = var.client_id
   client_secret           = var.client_secret
-
+  aks_vnet_name           = var.aks_vnet_name
+  aks_subnet_name         = var.aks_subnet_name
+  vnet_address_range      = var.vnet_address_range
+  subnet_address_range    = var.subnet_address_range
+  vnet_exists              = var.vnet_exists
 }

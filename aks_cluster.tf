@@ -1,22 +1,34 @@
 data "azurerm_virtual_network" "existing_aks_vnet" {
-  name                = var.aks_vnet_name
-  resource_group_name = var.resource_group_name
-  location            = var.resource_group_location
+  count                 = var.vnet_exists ? 1 : 0
+  name                  = var.aks_vnet_name
+  resource_group_name   = var.resource_group_name
+}
+
+data "azurerm_subnet" "existing_aks_subnet" {
+  count                 = var.vnet_exists ? 1 : 0
+  name                  = var.aks_subnet_name
+  virtual_network_name  = var.aks_vnet_name
+  resource_group_name   = var.resource_group_name
+}
+
+locals {
+  vnet_exists = length(data.azurerm_virtual_network.existing_aks_vnet) > 0
 }
 
 resource "azurerm_virtual_network" "aks_vnet" {
-  count               = data.azurerm_virtual_network.existing_aks_vnet ? 0 : 1
+  count               = local.vnet_exists ? 0 : 1
   name                = var.aks_vnet_name
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
-  address_space       = var.address_space
+  address_space       = var.vnet_address_range
 }
 
 resource "azurerm_subnet" "aks_subnet" {
+  count                = local.vnet_exists ? 0 : 1
   name                 = var.aks_subnet_name
   virtual_network_name = var.aks_vnet_name
   resource_group_name  = var.resource_group_name
-  address_prefixes     = var.address_prefixes
+  address_prefixes     = var.subnet_address_range
 
   depends_on = [
     azurerm_virtual_network.aks_vnet
@@ -39,7 +51,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     enable_auto_scaling  = var.enable_auto_scaling ? true : false
     max_count            = var.enable_auto_scaling ? var.node_pool_max_count : null
     min_count            = var.enable_auto_scaling ? var.node_pool_min_count : null
-    vnet_subnet_id       = azurerm_subnet.aks_subnet.id
+    vnet_subnet_id       = length(data.azurerm_subnet.existing_aks_subnet) > 0 ? data.azurerm_subnet.existing_aks_subnet[0].id : azurerm_subnet.aks_subnet[0].id
   }
 
   lifecycle {
@@ -61,4 +73,8 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   tags = {
     Environment = var.env
   }
+
+  depends_on = [
+    azurerm_subnet.aks_subnet
+  ]
 }

@@ -6,7 +6,6 @@ variable "k8s_version" {}
 
 # node pool
 variable "node_pool_name" {}
-variable "node_pool_count" {}
 variable "node_pool_vm_size" {}
 variable "node_pool_osdisk_size" {}
 variable "node_pool_max_count" {}
@@ -24,3 +23,18 @@ variable "subscription_id" {}
 variable "client_secret" {}
 variable "tenant_id" {}
 
+# virtual network and subnet
+variable "aks_vnet_name" {}
+variable "aks_subnet_name" {}
+
+variable "vnet_address_range" {
+  description = "The address space for the virtual network"
+  type        = list(string)
+}
+
+variable "subnet_address_range" {
+  description = "The address prefixes for the subnet"
+  type        = list(string)
+}
+
+variable "vnet_exists" {}
