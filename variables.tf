@@ -6,7 +6,6 @@ variable "enable_auto_scaling" {}
 
 # node pool
 variable "node_pool_name" {}
-variable "node_pool_count" {}
 variable "node_pool_vm_size" {}
 variable "node_pool_osdisk_size" {}
 variable "node_pool_max_count" {}
@@ -20,16 +19,18 @@ variable "client_secret" {}
 
 variable "env" {}
 
-# virtual network
+# virtual network and subnet
 variable "aks_vnet_name" {}
 variable "aks_subnet_name" {}
 
 variable "vnet_address_range" {
-  description = "The IP address range for the virtual network"
+  description = "The address space for the virtual network"
   type        = list(string)
 }
 
 variable "subnet_address_range" {
-  description = "The IP address range for the subnet"
+  description = "The address prefixes for the subnet"
   type        = list(string)
 }
+
+variable "vnet_exists" {}
