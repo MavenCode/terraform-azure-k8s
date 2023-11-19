@@ -20,8 +20,8 @@ variable "client_secret" {}
 variable "env" {}
 
 # virtual network and subnet
-variable "aks_vnet_name" {}
-variable "aks_subnet_name" {}
+variable "vnet_name" {}
+variable "subnet_name" {}
 
 variable "vnet_address_range" {
   description = "The address space for the virtual network"
