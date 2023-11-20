@@ -12,13 +12,13 @@ module "k8s_setup" {
   node_pool_max_count     = var.node_pool_max_count
   node_pool_min_count     = var.node_pool_min_count
   network_plugin          = var.network_plugin
-  load_balancer_sku       = var.load_balancer_sku
+  is_internal_lb          = var.is_internal_lb
   env                     = var.env
   client_id               = var.client_id
   client_secret           = var.client_secret
-  aks_vnet_name           = var.aks_vnet_name
-  aks_subnet_name         = var.aks_subnet_name
+  vnet_name               = var.vnet_name
+  subnet_name             = var.subnet_name
   vnet_address_range      = var.vnet_address_range
   subnet_address_range    = var.subnet_address_range
-  vnet_exists              = var.vnet_exists
+  vnet_exists             = var.vnet_exists
 }

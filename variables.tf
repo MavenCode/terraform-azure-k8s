@@ -11,7 +11,7 @@ variable "node_pool_osdisk_size" {}
 variable "node_pool_max_count" {}
 variable "node_pool_min_count" {}
 variable "network_plugin" {}
-variable "load_balancer_sku" {}
+variable "is_internal_lb" {}
 variable "dns_prefix" {}
 
 variable "client_id" {}
@@ -20,8 +20,8 @@ variable "client_secret" {}
 variable "env" {}
 
 # virtual network and subnet
-variable "aks_vnet_name" {}
-variable "aks_subnet_name" {}
+variable "vnet_name" {}
+variable "subnet_name" {}
 
 variable "vnet_address_range" {
   description = "The address space for the virtual network"

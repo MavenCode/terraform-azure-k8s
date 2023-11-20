@@ -1,13 +1,13 @@
 data "azurerm_virtual_network" "existing_aks_vnet" {
   count                 = var.vnet_exists ? 1 : 0
-  name                  = var.aks_vnet_name
+  name                  = var.vnet_name
   resource_group_name   = var.resource_group_name
 }
 
 data "azurerm_subnet" "existing_aks_subnet" {
   count                 = var.vnet_exists ? 1 : 0
-  name                  = var.aks_subnet_name
-  virtual_network_name  = var.aks_vnet_name
+  name                  = var.subnet_name
+  virtual_network_name  = var.vnet_name
   resource_group_name   = var.resource_group_name
 }
 
@@ -17,7 +17,7 @@ locals {
 
 resource "azurerm_virtual_network" "aks_vnet" {
   count               = local.vnet_exists ? 0 : 1
-  name                = var.aks_vnet_name
+  name                = var.vnet_name
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
   address_space       = var.vnet_address_range
@@ -25,8 +25,8 @@ resource "azurerm_virtual_network" "aks_vnet" {
 
 resource "azurerm_subnet" "aks_subnet" {
   count                = local.vnet_exists ? 0 : 1
-  name                 = var.aks_subnet_name
-  virtual_network_name = var.aks_vnet_name
+  name                 = var.subnet_name
+  virtual_network_name = var.vnet_name
   resource_group_name  = var.resource_group_name
   address_prefixes     = var.subnet_address_range
 
@@ -67,7 +67,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 
   network_profile {
     network_plugin    = var.network_plugin
-    load_balancer_sku = var.load_balancer_sku
+    load_balancer_sku = var.is_internal_lb ? "Basic" : "Standard"
   }
 
   tags = {
