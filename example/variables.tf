@@ -11,7 +11,7 @@ variable "node_pool_osdisk_size" {}
 variable "node_pool_max_count" {}
 variable "node_pool_min_count" {}
 variable "network_plugin" {}
-variable "load_balancer_sku" {}
+variable "is_internal_lb" {}
 variable "dns_prefix" {}
 
 
