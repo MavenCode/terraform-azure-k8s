@@ -11,8 +11,10 @@ variable "node_pool_osdisk_size" {}
 variable "node_pool_max_count" {}
 variable "node_pool_min_count" {}
 variable "network_plugin" {}
-variable "is_internal_lb" {}
+variable "load_balancer_sku" {}
 variable "dns_prefix" {}
+variable "private_cluster_enabled" {}
+variable "api_server_authorized_ip_ranges" {}
 
 
 variable "env" {}
