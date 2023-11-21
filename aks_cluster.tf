@@ -41,6 +41,8 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   resource_group_name = var.resource_group_name
   dns_prefix          = var.dns_prefix
   kubernetes_version  = var.k8s_version
+  api_server_authorized_ip_ranges  = var.private_cluster_enabled ? null : var.api_server_authorized_ip_ranges
+  private_cluster_enabled = var.private_cluster_enabled
 
   default_node_pool {
     name                 = var.node_pool_name
@@ -67,7 +69,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 
   network_profile {
     network_plugin    = var.network_plugin
-    load_balancer_sku = var.is_internal_lb ? "basic" : "standard"
+    load_balancer_sku = "standard"
   }
 
   tags = {
