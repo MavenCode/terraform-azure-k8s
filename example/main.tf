@@ -12,7 +12,7 @@ module "k8s_setup" {
   node_pool_max_count     = var.node_pool_max_count
   node_pool_min_count     = var.node_pool_min_count
   network_plugin          = var.network_plugin
-  is_internal_lb          = var.is_internal_lb
+  load_balancer_sku       = var.load_balancer_sku
   env                     = var.env
   client_id               = var.client_id
   client_secret           = var.client_secret

@@ -67,7 +67,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
 
   network_profile {
     network_plugin    = var.network_plugin
-    load_balancer_sku = var.is_internal_lb ? "Basic" : "Standard"
+    load_balancer_sku = var.load_balancer_sku
   }
 
   tags = {
