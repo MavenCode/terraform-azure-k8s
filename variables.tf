@@ -29,21 +29,10 @@ variable "private_cluster_enabled" {
   default     = true
 }
 
-
 variable "env" {}
 
-# virtual network and subnet
-variable "vnet_name" {}
-variable "subnet_name" {}
+variable "existing_subnet" {}
 
-variable "vnet_address_range" {
-  description = "The address space for the virtual network"
-  type        = list(string)
-}
+variable "existing_subnet_id" {}
 
-variable "subnet_address_range" {
-  description = "The address prefixes for the subnet"
-  type        = list(string)
-}
-
-variable "vnet_exists" {}
+variable "new_subnet_id" {}
