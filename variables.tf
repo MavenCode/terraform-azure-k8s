@@ -31,8 +31,4 @@ variable "private_cluster_enabled" {
 
 variable "env" {}
 
-variable "existing_subnet" {}
-
-variable "existing_subnet_id" {}
-
-variable "new_subnet_id" {}
+variable "subnet_id" {}

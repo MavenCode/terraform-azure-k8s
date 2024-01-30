@@ -16,7 +16,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     enable_auto_scaling  = var.enable_auto_scaling ? true : false
     max_count            = var.enable_auto_scaling ? var.node_pool_max_count : null
     min_count            = var.enable_auto_scaling ? var.node_pool_min_count : null
-    vnet_subnet_id       = length(var.existing_subnet) > 0 ? var.existing_subnet_id : var.new_subnet_id
+    vnet_subnet_id       = var.subnet_id
   }
 
   lifecycle {
