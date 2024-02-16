@@ -18,6 +18,10 @@ output "cluster_ca_certificate" {
   value = azurerm_kubernetes_cluster.k8s.kube_config.0.cluster_ca_certificate
 }
 
+output "kubelet_identity" {
+  value = flatten(azurerm_kubernetes_cluster.default.*.kubelet_identity)
+}
+
 output "cluster_username" {
   value = azurerm_kubernetes_cluster.k8s.kube_config.0.username
 }
