@@ -19,7 +19,7 @@ output "cluster_ca_certificate" {
 }
 
 output "kubelet_identity" {
-  value = flatten(azurerm_kubernetes_cluster.default.*.kubelet_identity)
+  value = flatten(azurerm_kubernetes_cluster.k8s.*.kubelet_identity)
 }
 
 output "cluster_username" {
