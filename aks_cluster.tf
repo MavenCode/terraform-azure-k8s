@@ -1,3 +1,9 @@
+data "azurerm_user_assigned_identity" "umid" {
+  location              = var.resource_group_location
+  name                  = var.umid_name
+  resource_group_name   = var.resource_group_name
+}
+
 resource "azurerm_kubernetes_cluster" "k8s" {
   name                             = "${var.cluster_name}"
   location                         = var.resource_group_location
@@ -25,15 +31,10 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     ]
   }
 
-  service_principal {
-    client_id     = var.client_id
-    client_secret = var.client_secret
+  identity {
+    type = "SystemAssigned"
+    identity_ids = [data.azurerm_user_assigned_identity.umid.id]
   }
-
-#  identity {
-#    type = "SystemAssigned"
-#  }
-
 
   network_profile {
     network_plugin    = var.network_plugin

@@ -32,3 +32,5 @@ variable "private_cluster_enabled" {
 variable "env" {}
 
 variable "subnet_id" {}
+
+variable "umid_name" {}
