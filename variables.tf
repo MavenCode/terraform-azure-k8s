@@ -33,4 +33,4 @@ variable "env" {}
 
 variable "subnet_id" {}
 
-variable "umid_name" {}
+// variable "umid_name" {}
